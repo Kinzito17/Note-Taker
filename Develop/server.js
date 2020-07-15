@@ -10,6 +10,8 @@ app.use(express.json());
 
 const notes = []
 
+app.use(express.static(__dirname + '/public'));
+
 app.get("/", function(req, res) {
     res.sendFile(path.join(__dirname, "/public/index.html"));
   });
@@ -21,8 +23,6 @@ app.get("/", function(req, res) {
   app.get("/api/notes", function (req, res) {
     return res.json(notes)
   });
-
-
 
   app.post("/api/notes", function (req, res) {
     let newNote = req.body;
