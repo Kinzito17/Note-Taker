@@ -1,6 +1,7 @@
 const fs = require("fs");
 const express = require("express");
 const path = require("path");
+const { v4: uuidv4 } = require('uuid');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -8,9 +9,7 @@ const PORT = process.env.PORT || 8080;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-const notes = [];
-
-// notes = notes.map((i, idx) => ({...i, id: idx}))
+let notes = [];
 
 app.use(express.static(__dirname + '/public'));
 
@@ -28,26 +27,33 @@ app.get("/api/notes", (req, res) => {
     fs.readFile(path.join(__dirname, "db/db.json"), (err, notes) => {
         if (err) throw err;
     })
-    console.log(notes);
+    // console.log(notes)
     return res.json(notes)
 });
 
 app.post("/api/notes", (req, res) => {
-    let newNote = req.body;
-    notes.push(newNote)
+    newNote = req.body
+    notes.push(newNote);
     notes.forEach((id, index) => {
-        id.id = index + 1;
-    });    
+        id.id = uuidv4();
+    });
     fs.writeFile(path.join(__dirname, 'db/db.json'), JSON.stringify(notes), (err) => {
         if (err) throw err;
-      });
+    });
     res.end();
 });
 
 app.delete("/api/notes/:id", (req, res) => {
-    chosen = req.params.id
-    return res.send("/api/notes")
-})
+    console.log(req.params.id);
+    let newNotes = notes.filter(note => note.id != req.params.id); 
+    console.log(notes[0].id);
+    console.log(newNotes);
+    fs.writeFile(path.join(__dirname, 'db/db.json'), JSON.stringify(newNotes), (err) => {
+        if (err) throw err;
+        notes = newNotes
+    });
+    res.end();
+});
 
 
 app.listen(PORT, function () {
