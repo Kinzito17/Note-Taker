@@ -27,15 +27,14 @@ app.get("/api/notes", (req, res) => {
     fs.readFile(path.join(__dirname, "db/db.json"), (err, notes) => {
         if (err) throw err;
     })
-    // console.log(notes)
     return res.json(notes)
 });
 
 app.post("/api/notes", (req, res) => {
     newNote = req.body
     notes.push(newNote);
-    notes.forEach((id, index) => {
-        id.id = uuidv4();
+    notes.forEach((note) => {
+        note.id = uuidv4();
     });
     fs.writeFile(path.join(__dirname, 'db/db.json'), JSON.stringify(notes), (err) => {
         if (err) throw err;
@@ -46,8 +45,8 @@ app.post("/api/notes", (req, res) => {
 app.delete("/api/notes/:id", (req, res) => {
     console.log(req.params.id);
     let newNotes = notes.filter(note => note.id != req.params.id); 
-    console.log(notes[0].id);
-    console.log(newNotes);
+    // console.log(notes[0].id);
+    // console.log(newNotes);
     fs.writeFile(path.join(__dirname, 'db/db.json'), JSON.stringify(newNotes), (err) => {
         if (err) throw err;
         notes = newNotes
