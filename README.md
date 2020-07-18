@@ -13,3 +13,5 @@ A user can visit the site, click the get started button and start creating new, 
 ## Demo
 
 The app was deployed on Heroku and can be visited by clicking [HERE](https://notetakerhwapp.herokuapp.com/)
+
+![demo-gif](http://g.recordit.co/rF9z5eByDN.gif)
